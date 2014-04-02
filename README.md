@@ -59,6 +59,9 @@ operation on the [CocoaPods API](http://blog.cocoapods.org/Search-API-Version-1/
 
 ### BDD Specification
 
+The code was tested against an initial behaviour-driven specification that
+verifies the Picky JSON parsing as well as the search operation functionality.
+
 - Open the Picky.xcworkspace
 - Run the PickySpec specification by executing the PickyTests target (⌘+U)
 - All 3 tests should pass successfully
