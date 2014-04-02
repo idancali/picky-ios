@@ -57,7 +57,7 @@ operation on the [CocoaPods API](http://blog.cocoapods.org/Search-API-Version-1/
    2014-04-02 23:39:20.650 Picky[7381:a0b] Got 137 Picky results at offset 50 in 0.000233 seconds
    ```
 
-### BDD Specification
+### Acceptance Testing
 
 The code was tested against an initial behaviour-driven specification that
 verifies the Picky JSON parsing as well as the search operation functionality.
