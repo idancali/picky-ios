@@ -38,6 +38,19 @@ failure:^(NSString* errorMessage)
 }];
 ```
 
+### Sample app
+
+A very simple sample app is included in the code, that performs a simple search
+operation on the [CocoaPods API](http://blog.cocoapods.org/Search-API-Version-1/).
+
+- Open the Picky.xcworkspace
+- Run the PickyExample application
+- You should be getting a successful prompt on the console:
+
+```ruby
+2014-04-02 23:39:20.650 Picky[7381:a0b] Got 137 Picky results at offset 50 in 0.000233 seconds
+```
+
 ### License
 
 The Picky iOS SDK is made available under the MIT license. Pleace see the LICENSE file 
