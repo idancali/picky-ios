@@ -10,7 +10,6 @@
 		4D228B1218EC45AF00B35F7B /* Picky.m in Sources */ = {isa = PBXBuildFile; fileRef = 4D228B0F18EC45AF00B35F7B /* Picky.m */; };
 		4D228B1318EC45AF00B35F7B /* PickyAllocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 4D228B1118EC45AF00B35F7B /* PickyAllocation.m */; };
 		4D228B1618EC460100B35F7B /* PickySearchOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 4D228B1518EC460100B35F7B /* PickySearchOperation.m */; };
-		4D228B1918EC497200B35F7B /* PickySharedSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 4D228B1818EC497200B35F7B /* PickySharedSpec.m */; };
 		4DAACAD418EC01EA002A2860 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DAACAD318EC01EA002A2860 /* Foundation.framework */; };
 		4DAACAD618EC01EA002A2860 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DAACAD518EC01EA002A2860 /* CoreGraphics.framework */; };
 		4DAACAD818EC01EA002A2860 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DAACAD718EC01EA002A2860 /* UIKit.framework */; };
@@ -49,7 +48,6 @@
 		4D228B1118EC45AF00B35F7B /* PickyAllocation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PickyAllocation.m; sourceTree = "<group>"; };
 		4D228B1418EC460100B35F7B /* PickySearchOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PickySearchOperation.h; sourceTree = "<group>"; };
 		4D228B1518EC460100B35F7B /* PickySearchOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PickySearchOperation.m; sourceTree = "<group>"; };
-		4D228B1818EC497200B35F7B /* PickySharedSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PickySharedSpec.m; sourceTree = "<group>"; };
 		4DAACAD018EC01EA002A2860 /* Picky.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Picky.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4DAACAD318EC01EA002A2860 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		4DAACAD518EC01EA002A2860 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -171,7 +169,6 @@
 			isa = PBXGroup;
 			children = (
 				4DAACAF818EC01EA002A2860 /* PickySpec.m */,
-				4D228B1818EC497200B35F7B /* PickySharedSpec.m */,
 				4DAACAF318EC01EA002A2860 /* Supporting Files */,
 			);
 			path = PickyTests;
@@ -365,7 +362,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				4DAACAF918EC01EA002A2860 /* PickySpec.m in Sources */,
-				4D228B1918EC497200B35F7B /* PickySharedSpec.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

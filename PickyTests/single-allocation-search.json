@@ -1,1 +1,1 @@
-{"duration":0.001214,"total":1,"offset":0,"allocations":[["books",6.0,1,[["title","pinchn~","pynchon"]],[],["<div class='book'><p>\"The Self-Conscious Novel: Artifice in Fiction from Joyce to Pynchon\", by Stonehill, Brian</p><p>1988, University of Pennsylvania Press, 9780812280982</p><p>Fiction & Literature; Reference & Languages</p></div>"]]]}
+{"allocations":[["pods",3.0,1,[["name","sdl-ios","sdl-ios"]],["SDL-iOS-SDK"],["SDL-iOS-SDK"]]],"offset":0,"duration":0.000259,"total":1}

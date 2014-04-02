@@ -27,24 +27,121 @@
 #import "Expecta.h"
 #import "OCMock.h"
 #import "Nocilla.h"
-#import "PickySharedSpec.m"
 
 #import "Picky.h"
 #import "PickySearchOperation.h"
+
+#define SHARED_PARSE_MULTIPLE_ALLOCATIONS   @"parse multiple allocations"
+#define SHARED_PARSE_SINGLE_ALLOCATION      @"parse one allocation"
+
+SharedExamplesBegin(Picky)
+
+// This scenario checks if our code can handle a single allocation
+sharedExamplesFor(SHARED_PARSE_SINGLE_ALLOCATION, ^(NSDictionary* data ) {
+
+    // Let's start by making sure the data is valid
+    id json = [data objectForKey:@"json"];
+    expect(json).toNot.beNil();
+
+    // Let's check if the initial parsing passed
+    Picky* picky = [Picky pickyWithJson:json];
+    expect(picky).toNot.beNil();
+
+    // The test results we are expecting are for a single result at offset 0 and with the given duration of 0.000259
+    expect(picky.offset).to.equal(0);
+    expect(picky.total).to.equal(1);
+    expect(picky.duration).to.equal(0.000259);
+
+    // We have to make sure we found exactly one allocation
+    expect(picky.allocations).toNot.beNil();
+    expect([picky.allocations count]).to.equal(1);
+
+    // Let's make sure that allocation parses ok
+    PickyAllocation* allocation = [picky.allocations firstObject];
+    expect(allocation).toNot.beNil();
+
+    // The index name we expect is 'pods', with a 6.0 score and with one single result
+    expect(allocation.indexName).to.equal(@"pods");
+    expect(allocation.score).to.equal(3.0f);
+    expect(allocation.totalResults).to.equal(1);
+
+    // We expect one single match result
+    expect(allocation.matches).toNot.beNil();
+    expect(allocation.matches.count).to.equal(1);
+
+    // We expect one single id
+    expect(allocation.resultIds).toNot.beNil();
+    expect(allocation.resultIds.count).to.equal(1);
+
+    // Let's just make sure we do have one result though
+    expect(allocation.results).toNot.beNil();
+    expect(allocation.results.count).to.equal(1);
+});
+
+// This scenario checks if our code can handle a multiple allocations
+sharedExamplesFor(SHARED_PARSE_MULTIPLE_ALLOCATIONS, ^(NSDictionary* data) {
+
+    // Let's start by making sure the data is valid
+    id json = [data objectForKey:@"json"];
+    expect(json).toNot.beNil();
+
+    // Let's check if the initial parsing passed
+    Picky* picky = [Picky pickyWithJson:json];
+    expect(picky).toNot.beNil();
+
+    // The test results we are expecting are for 2 allocations at offset 0 and with the given duration of 0.000216
+    expect(picky.offset).to.equal(0);
+    expect(picky.total).to.equal(2);
+    expect(picky.duration).to.equal(0.000216);
+
+    // We have to make sure we found exactly 2 allocations
+    expect(picky.allocations).toNot.beNil();
+    expect([picky.allocations count]).to.equal(2);
+
+    // Let's make sure that the first allocation parses ok
+    PickyAllocation* firstAllocation = [picky.allocations firstObject];
+    expect(firstAllocation).toNot.beNil();
+    expect(firstAllocation.indexName).to.equal(@"pods");
+    expect(firstAllocation.score).to.equal(3.0f);
+    expect(firstAllocation.totalResults).to.equal(1);
+    expect(firstAllocation.matches).toNot.beNil();
+    expect(firstAllocation.matches.count).to.equal(1);
+    expect(firstAllocation.resultIds).toNot.beNil();
+    expect(firstAllocation.resultIds.count).to.equal(1);
+    expect(firstAllocation.results).toNot.beNil();
+    expect(firstAllocation.results.count).to.equal(1);
+
+    // Now's let check the second allocation
+    PickyAllocation* secondAllocation = [picky.allocations lastObject];
+    expect(secondAllocation).toNot.beNil();
+    expect(secondAllocation.indexName).to.equal(@"pods");
+    expect(secondAllocation.score).to.equal(-3.0f);
+    expect(secondAllocation.totalResults).to.equal(1);
+    expect(secondAllocation.matches).toNot.beNil();
+    expect(secondAllocation.matches.count).to.equal(1);
+    expect(secondAllocation.resultIds).toNot.beNil();
+    expect(secondAllocation.resultIds.count).to.equal(1);
+    expect(secondAllocation.results).toNot.beNil();
+    expect(secondAllocation.results.count).to.equal(1);
+});
+
+SharedExamplesEnd
 
 SpecBegin(Picky)
 
 // We want to handle Picky search results, so let's check for search result scenarios
 describe(@"Search", ^{
-   
+
     // We're going to use this queue to test our scenario async operations
     __block NSOperationQueue* _queue    =   nil;
 
     // This is our test bundle that's we're going to use to store test resources for all of our scenarios
     __block NSBundle* _bundle           =   nil;
 
-    // This is just a simple helper block that allows us to neatly store expected JSON results in test files in our test bundle
-    __block NSString* (^loadExpectedJsonResultFromFile)(NSString* filename) = ^(NSString* filename){return [NSJSONSerialization JSONObjectWithData:[[NSString stringWithContentsOfFile:[_bundle pathForResource:filename ofType:@"json"] encoding:NSUTF8StringEncoding error:NULL] dataUsingEncoding:NSUTF8StringEncoding] options:0 error:nil];};
+    // These are simple helper blocks that allow us to neatly store expected JSON results in test files in our test bundle
+    __block NSString* (^loadFileContent)(NSString* filename) = ^(NSString* filename){return [NSString stringWithContentsOfFile:[_bundle pathForResource:filename ofType:@"json"] encoding:NSUTF8StringEncoding error:NULL];};
+    __block id (^loadExpectedJsonResultFromFile)(NSString* filename) = ^(NSString* filename){return
+        [NSJSONSerialization JSONObjectWithData:[loadFileContent(filename) dataUsingEncoding:NSUTF8StringEncoding] options:0 error:nil];};
     
     beforeAll(^{
         // We're only going to do this once, and we're going to re-use the bundle for all scenarios
@@ -58,6 +155,11 @@ describe(@"Search", ^{
         [Expecta setAsynchronousTestTimeout:5.0];
     });
     
+    afterAll(^{
+        // We can now stop stubbing request
+        [[LSNocilla sharedInstance] stop];
+    });
+    
     // This is our first scenario we want to validate; can we parse a single allocation?
     it (@"Can parse a single allocation", ^{
         itShouldBehaveLike(SHARED_PARSE_SINGLE_ALLOCATION, @{@"json" : loadExpectedJsonResultFromFile(@"single-allocation-search")});
@@ -69,16 +171,16 @@ describe(@"Search", ^{
     });
 
     // Alright, now that we've settled the parsing scenarions, let's see if we can handle a basic operation flow
-    // We're going to use the basic Picky server response as our reference point: http://picky-simple-example.heroku.com
+    // We're going to use the CocoaPods API as our reference point: http://blog.cocoapods.org/Search-API-Version-1/
     it (@"Can perform search operations", ^AsyncBlock {
        
-        // Here's the request we're checking: http://picky-simple-example.heroku.com/search/full?query=alan&offset=0
-        NSString* url = @"http://picky-simple-example.heroku.com/search/full";
-        NSDictionary* params = @{@"query" : @"alan", @"offset" : @"0"};
-        NSString* expectedJsonResponse = loadExpectedJsonResultFromFile(@"multiple-allocations-search");
+        // Here's the request we're checking: http://search.cocoapods.org/api/pods?query=sdl&amount=2&start-at=0
+        NSString* url = @"http://search.cocoapods.org/api/pods";
+        NSDictionary* params = @{@"query" : @"sdl", @"start-at" : @"0", @"amount" : @"2"};
+        NSString* expectedJsonResponse = (NSString*) loadFileContent(@"multiple-allocations-search");
 
         // Our purpose is to verify our flow, not to test networking so let's stub out the call for now
-        stubRequest(@"GET", [NSString stringWithFormat:@"%@?%@", url, params]).andReturn(200).
+        stubRequest(@"GET", @"http://search.cocoapods.org/api/pods?amount=2&query=sdl&start-at=0").andReturn(200).
         withHeaders(@{@"Content-Type": @"application/json"}).
         withBody (expectedJsonResponse);
         
