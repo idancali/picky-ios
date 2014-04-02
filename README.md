@@ -1,11 +1,15 @@
 Picky iOS SDK
 =========
 
-[Picky](https://github.com/floere/picky) is lightweight semantic text search engine. The Picky iOS SDK enabled your iOS app to talk to a Picky server and to easily perform search operations.
+[Picky](https://github.com/floere/picky) is lightweight semantic text search engine. The Picky iOS SDK enables your iOS app to talk to a Picky server and to easily perform search operations.
 
 ### Getting Started
 
+The Picky iOS SDK is a breeze to setup and use. All you need to do is add the kit to your app, include the header in your code
+and perform a search operation. That's it.
+
 #### Add via CocoaPods
+
 ```ruby
 platform :ios, '7.0'
 pod "Picky", "~> 0.1.0"
@@ -16,6 +20,7 @@ pod "Picky", "~> 0.1.0"
 ```objective-c
 #import "Picky.h"
 ```
+
 #### Perform a search operation
 
 ```objective-c
